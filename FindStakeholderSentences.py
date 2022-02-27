@@ -15,6 +15,9 @@
 # instead of a discrete list of files. That is not too hard.
 # Copied from cfg.py until I get that working
 # Classes of stakeholders currently evaluated
+# ---------------------------------------------------------------------------------------------------
+import os
+
 ShCatList = ['employee', 'investor', 'customer', 'supplier', 'society', 'community', 'dealer',
              'stakeholder', 'environment', 'regulator', 'competitor']
 ShList = ['e', 'i', 'c', 'u', 'o', 'm', 'd', 't', 'n', 'r', 'p']
@@ -70,11 +73,18 @@ ShCatListDic['competitor'] = ['competitor', 'competition', 'rival', 'challenger'
 
 
 # The letters to be searched
-BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Letters/09-CL-txt/'
+BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Letters/09-CL-txt/'
 SampleLettersList = ['XEL-CL1-FY2007.txt', 'MRK-CL1-FY2008.txt', 'CSCO-CL1-FY2008.txt', 'ABC-CL2-FY2006.txt', 'CVS-CL1-FY2006.txt',
                      'BEN-CL1-FY2013.txt', 'SWK-CL1-FY2012.txt', 'NUE-CL1-FY2014.txt', 'ETFC-CL1-FY2011.txt', 'DIS-CL1-FY2012.txt',
                      'HAL-CL1-FY2017.txt', 'COST-CL1-FY2019.txt', 'D-CL1-FY2019.txt', 'COST-CL1-FY2016.txt', 'EQR-CL1-FY2016.txt']
 # Each row will be letter, sentence id, total letter sentence count, base stakeholder, stakeholder term, and sentence text.
+LettersList = []
+fnl = os.listdir(BaseLetterDir)
+for fn in fnl:
+    if fn.lower().endswith('txt'):
+        LettersList.append(fn)
+
+
 OutList = [['Letter_File_Name', 'Sentence_Token_Count', 'Sent_ID','Total_Letter_Sentences', 'Specific_Term', 'Stakeholder_Group', 'Sentence_Text']]
 
 # Load Letters into strings
@@ -83,14 +93,17 @@ stanza.download('en')
 nlp = stanza.Pipeline('en')
 
 # Load up Stanza and turn documents into sentences.
-for ltr in SampleLettersList:
+j = 0
+for ltr in LettersList:
+    j = j + 1
     full_infile_path = BaseLetterDir + ltr
 
     inputfile = open(full_infile_path, mode='r', encoding='utf-8', errors='ignore')
     text1 = inputfile.read()
 #    print (text1)
+    print(j, '--------------------', ltr, '-----------------------') # Moving this forward to improve de-bug. Likely just puking on gibberish characters.
     doc = nlp(text1)
-    print('--------------------', ltr, '-----------------------')
+#    print('--------------------', ltr, '-----------------------')
     for i, sent in enumerate(doc.sentences):
 #        print (ltr, i, len(sent.tokens), sent.text)
         for sh in ShCatList:
@@ -114,7 +127,7 @@ for ltr in SampleLettersList:
 print (OutList)
 
 # Write OutList to a file
-OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/scratch/sh1-v5.csv'
+OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/sh1-v2.csv'
 import csv
 with open(OutFile, "w") as f:
     wr = csv.writer(f)
