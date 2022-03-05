@@ -1,20 +1,18 @@
 # A simple file to find forms of "environment" and "climate" not near "economic"
 # Will deliver results in same format as other searches (after a little work).
+
+# Now need to get to the good bits from FindStakeholderSentences.py incorporated.
+# This is the lay-out of the outfile.
 import os
 import csv
 
 # The letters to be searched
 BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Letters/09-CL-txt/'
-LogFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/CleanLog.txt'
 LettersList = []
-print ('h1')
-OutList = [['Letter_File_Name', 'File_Word_Count']]
-OutList2 = [['LetterFileName', 'Ticker', 'Fiscal_Year', 'Investor', 'Employee', 'Customer', 'Community', 'Supplier', 'Stakeholder']] # Salutation
-OutList3 = [['LetterFileName', 'Ticker', 'Fiscal_Year', 'Investor', 'Employee', 'Customer', 'Community', 'Supplier', 'Stakeholder']] # Valediction
-print ('h2')
+OutList = [['LetterFileName', 'Ticker', 'Fiscal_Year', 'Specific_Term', 'Stakeholder_Group']] # Salutation
 fnl = os.listdir(BaseLetterDir)
 print (fnl)
-print ('h3')
+
 for fn in fnl:
     if fn.lower().endswith('txt'):
         LettersList.append(fn)
@@ -23,3 +21,16 @@ for fn in fnl:
         data = f.read()
         words = data.split()
         print (words)
+        for i in range(0,len(words)):
+            if ("environment" in words[i].lower() or "climate" in words[i].lower() or "sustainab" in words[i].lower()) \
+                    and not ("econom" in words[i-1].lower() or "economic" in words[i-2].lower() or "economic" in words[i-3].lower())\
+                    and not ("politic" in words[i-1].lower() or "politic" in words[i-2].lower() or "politic" in words[i-3].lower()):
+                print(fn, fn.split('-')[0], fn.split('-')[2][2:6], words[i], 'Environment')
+                if i > 5:
+                    print(words[i-5:i+1])
+                OutList.append([fn, fn.split('-')[0], fn.split('-')[2][2:6], words[i], 'Environment'])
+
+OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/environment_count-v3.csv'
+with open(OutFile, "w") as f:
+    wr2 = csv.writer(f)
+    wr2.writerows(OutList)
