@@ -98,10 +98,10 @@ Gov_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGDat
 # I think there is a better way to do all of this.
 # Loads in dataframe
 esg_df = pd.read_csv(ESG_InFile) # Can change to list or whatever when I am ready for that logic
-env_df = pd.read_csv(ESG_InFile)
-com_df = pd.read_csv(ESG_InFile)
-emp_df = pd.read_csv(ESG_InFile)
-gov_df = pd.read_csv(ESG_InFile)
+env_df = pd.read_csv(Env_InFile)
+com_df = pd.read_csv(Com_InFile)
+emp_df = pd.read_csv(Emp_InFile)
+gov_df = pd.read_csv(Gov_InFile)
 esg_df['Month']= esg_df.Month.astype(str) # Makes sure that Month columns is not treated as a number.
 env_df['Month']= env_df.Month.astype(str)
 com_df['Month']= com_df.Month.astype(str)
@@ -168,3 +168,27 @@ print (env_out_list)
 print (com_out_list)
 print (emp_out_list)
 print (gov_out_list)
+
+esg_df2 = pd.DataFrame(esg_out_list).T.set_index(0).T
+env_df2 = pd.DataFrame(env_out_list).T.set_index(0).T
+com_df2 = pd.DataFrame(com_out_list).T.set_index(0).T
+emp_df2 = pd.DataFrame(emp_out_list).T.set_index(0).T
+gov_df2 = pd.DataFrame(gov_out_list).T.set_index(0).T
+age_df2 = pd.DataFrame(age_out_list).T.set_index(0).T
+
+print (esg_df2)
+print (env_df2)
+print (com_df2)
+print (emp_df2)
+print (gov_df2)
+print (age_df2)
+
+# Just start stacking together the values into a single dataframe
+out_df = pd.merge(esg_df2, env_df2, how = 'outer')
+out_df = pd.merge(out_df, com_df2, how = 'outer')
+out_df = pd.merge(out_df, emp_df2, how = 'outer')
+out_df = pd.merge(out_df, gov_df2, how = 'outer')
+out_df = pd.merge(out_df, age_df2, how = 'outer')
+
+print (out_df)
+out_df.to_csv(OutFile)
