@@ -122,18 +122,46 @@ emp_out_list = [['Key', "CSR_Emp_Mean"]]
 gov_out_list = [['Key', "CSR_Gov_Mean"]]
 age_out_list = [['Key', 'Age']]
 
+# tkr and fl are global values. I can drive out of the five CSR files with those values.
+
 for tkr in TickerList:
     for fy in range(StartYear, EndYear + 1):
         fl = fisc_list_fxn(fy, TickerOffsetDic[tkr])
 #        print (tkr, fy, TickerOffsetDic[tkr], ':', fl)
-        foo2 = esg_df[esg_df.Month.isin(fl)]
-        foo3 = (foo2[tkr])
-        mf = foo3.mean()
         ta = fy - TickerFoundedDic[tkr]
         key_string = tkr + "-" + str(fy)
-        esg_out_list.append([key_string, mf])
         age_out_list.append([key_string, ta])
-        print(tkr, fy, TickerOffsetDic[tkr], fl, mf, ta)
+
+        esg_foo2 = esg_df[esg_df.Month.isin(fl)]
+        env_foo2 = env_df[env_df.Month.isin(fl)]
+        com_foo2 = com_df[com_df.Month.isin(fl)]
+        emp_foo2 = emp_df[emp_df.Month.isin(fl)]
+        gov_foo2 = gov_df[gov_df.Month.isin(fl)]
+
+        esg_foo3 = (esg_foo2[tkr])
+        env_foo3 = (env_foo2[tkr])
+        com_foo3 = (com_foo2[tkr])
+        emp_foo3 = (emp_foo2[tkr])
+        gov_foo3 = (gov_foo2[tkr])
+
+        esg_mf = esg_foo3.mean()
+        env_mf = env_foo3.mean()
+        com_mf = com_foo3.mean()
+        emp_mf = emp_foo3.mean()
+        gov_mf = gov_foo3.mean()
+
+        esg_out_list.append([key_string, esg_mf])
+        env_out_list.append([key_string, env_mf])
+        com_out_list.append([key_string, com_mf])
+        emp_out_list.append([key_string, emp_mf])
+        gov_out_list.append([key_string, gov_mf])
+
+        print(tkr, fy, TickerOffsetDic[tkr], fl, esg_mf, ta)
+        print(tkr, fy, TickerOffsetDic[tkr], fl, env_mf, ta)
+        print(tkr, fy, TickerOffsetDic[tkr], fl, com_mf, ta)
+        print(tkr, fy, TickerOffsetDic[tkr], fl, emp_mf, ta)
+        print(tkr, fy, TickerOffsetDic[tkr], fl, gov_mf, ta)
+
 print(age_out_list)
 print (esg_out_list)
 print (env_out_list)
