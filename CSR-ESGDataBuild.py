@@ -89,14 +89,39 @@ def fisc_list_fxn(fy, om): # ---------------------------------------------------
     return(tys_list)
 # End fisc_list_fxn() -----------------------------------------------------------------------------------
 
-InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-ESG-1.csv'
+ESG_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-ESG-1.csv'
+Env_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-Env-1.csv'
+Com_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-Com-1.csv'
+Emp_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-Emp-1.csv'
+Gov_InFile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/ESGData/CSR-Gov-1.csv'
 
+# I think there is a better way to do all of this.
 # Loads in dataframe
-esg_df = pd.read_csv(InFile) # Can change to list or whatever when I am ready for that logic.
+esg_df = pd.read_csv(ESG_InFile) # Can change to list or whatever when I am ready for that logic
+env_df = pd.read_csv(ESG_InFile)
+com_df = pd.read_csv(ESG_InFile)
+emp_df = pd.read_csv(ESG_InFile)
+gov_df = pd.read_csv(ESG_InFile)
 esg_df['Month']= esg_df.Month.astype(str) # Makes sure that Month columns is not treated as a number.
+env_df['Month']= env_df.Month.astype(str)
+com_df['Month']= com_df.Month.astype(str)
+emp_df['Month']= emp_df.Month.astype(str)
+gov_df['Month']= gov_df.Month.astype(str)
 print (esg_df)
+print (env_df)
+print (com_df)
+print (emp_df)
+print (gov_df)
 
 # Here's the actual logic to work through the list of companies and the ranage of years.
+# I think this probably demo's everything I need to do.
+esg_out_list = [['Key', "CSR_ESG_Mean"]]
+env_out_list = [['Key', "CSR_Env_Mean"]]
+com_out_list = [['Key', "CSR_Com_Mean"]]
+emp_out_list = [['Key', "CSR_Emp_Mean"]]
+gov_out_list = [['Key', "CSR_Gov_Mean"]]
+age_out_list = [['Key', 'Age']]
+
 for tkr in TickerList:
     for fy in range(StartYear, EndYear + 1):
         fl = fisc_list_fxn(fy, TickerOffsetDic[tkr])
@@ -105,4 +130,13 @@ for tkr in TickerList:
         foo3 = (foo2[tkr])
         mf = foo3.mean()
         ta = fy - TickerFoundedDic[tkr]
+        key_string = tkr + "-" + str(fy)
+        esg_out_list.append([key_string, mf])
+        age_out_list.append([key_string, ta])
         print(tkr, fy, TickerOffsetDic[tkr], fl, mf, ta)
+print(age_out_list)
+print (esg_out_list)
+print (env_out_list)
+print (com_out_list)
+print (emp_out_list)
+print (gov_out_list)
