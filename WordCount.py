@@ -61,10 +61,10 @@ print (OutList3)
 #    wr = csv.writer(f)
 #   wr.writerows(OutList)
 
-OutFile2 = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/salutation_count-v2.csv'
-with open(OutFile2, "w") as f:
-    wr2 = csv.writer(f)
-    wr2.writerows(OutList2)
+#OutFile2 = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/salutation_count-v2.csv'
+#with open(OutFile2, "w") as f:
+#    wr2 = csv.writer(f)
+#    wr2.writerows(OutList2)
 
 OutFile3 = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/valediction_count-v1.csv'
 with open(OutFile3, "w") as f:
