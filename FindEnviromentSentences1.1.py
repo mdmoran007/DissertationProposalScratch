@@ -30,7 +30,7 @@ for fn in fnl:
                     print(words[i-5:i+1])
                 OutList.append([fn, fn.split('-')[0], fn.split('-')[2][2:6], words[i], 'Environment'])
 
-OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Out/env-v1.csv'
+OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/env-v1.csv'
 with open(OutFile, "w") as f:
     wr2 = csv.writer(f)
     wr2.writerows(OutList)
