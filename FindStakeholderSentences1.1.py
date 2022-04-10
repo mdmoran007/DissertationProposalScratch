@@ -17,11 +17,19 @@
 # Classes of stakeholders currently evaluated
 # ---------------------------------------------------------------------------------------------------
 import os
+import csv
+from datetime import datetime
 
-ShCatList = ['employee', 'investor', 'customer', 'supplier', 'society', 'community', 'dealer',
-             'stakeholder', 'environment', 'regulator', 'competitor']
-ShList = ['e', 'i', 'c', 'u', 'o', 'm', 'd', 't', 'n', 'r', 'p']
+OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
+out_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
+
+#ShCatList = ['employee', 'investor', 'customer', 'supplier', 'society', 'community', 'dealer',
+#             'stakeholder', 'environment', 'regulator', 'competitor']
+ShCatList = ['employee', 'investor', 'customer', 'supplier', 'community', 'stakeholder']
+#ShList = ['e', 'i', 'c', 'u', 'o', 'm', 'd', 't', 'n', 'r', 'p']
+ShList = ['e', 'i', 'c', 'u', 'm', 't']
 MaskDic = {}
+dfl = []
 # Efficient way to merge above two lists into dictionaries.
 for key in ShCatList:
    for value in ShList:
@@ -36,58 +44,46 @@ ShCatBaseListDic['investor'] = ['investor', 'shareholder', 'stockholder']
 ShCatBaseListDic['customer'] = ['customer', 'client']
 ShCatBaseListDic['supplier'] = ['supplier', 'supply base']
 ShCatBaseListDic['community'] = ['community', 'city', 'communities', 'cities']
-ShCatBaseListDic['society'] = ['society']
-ShCatBaseListDic['dealer'] = ['dealer', 'distributor', 'wholesaler', 'retailer', 'channel']
+#ShCatBaseListDic['society'] = ['society']
+#ShCatBaseListDic['dealer'] = ['dealer', 'distributor', 'wholesaler', 'retailer', 'channel']
 ShCatBaseListDic['stakeholder'] = ['stakeholder', 'partner']
-ShCatBaseListDic['environment'] = ['environment', 'climate']
-ShCatBaseListDic['regulator'] = ['regulator', 'agency', 'agencies']
-ShCatBaseListDic['competitor'] = ['competitor', 'competition']
+#ShCatBaseListDic['environment'] = ['environment', 'climate']
+#ShCatBaseListDic['regulator'] = ['regulator', 'agency', 'agencies']
+#ShCatBaseListDic['competitor'] = ['competitor', 'competition']
 
-ShCatListDic = {}  # Holds all the proposed synonyms from stakeholders.
-ShCatListDic['employee'] = ['employee', 'workforce', 'worker', 'coworker', 'staffer',
-                            'ex-employee', 'employer', 'employee-employer', 'customer', 'contractor',
-                            'pension', 'stock taker', 'organization man', 'servants quarters', 'take home vehicle',
-                            'employed person', 'serving master']
-ShCatListDic['investor'] = ['investor', 'shareholder', 'stockholder', 'equity',
-                            'private equity', 'investee', 'entrepreneur', 'investment', 'sentiment',
-                            'confidence', 'interest', 'worries']
-ShCatListDic['customer'] = ['customer', 'client']
-ShCatListDic['supplier'] = ['supplier', 'supply chain', 'importer', 'maker',
-                            'manufacturer', 'reseller', 'component']
-ShCatListDic['community'] = ['community', 'city', 'district',
-                             'area',
-                             'organization', 'neighborhood',
-                             'system']
-ShCatListDic['society'] = ['society', 'club', 'guild', 'gild', 'lodge', 'order', 'company', 'fellowship',
-                           'body politic',
-                           'culture', 'institute']
-ShCatListDic['dealer'] = ['dealer', 'distribution channel', 'distributor', 'wholesaler', 'trader', 'bargainer',
-                          'monger', 'principal', 'dealership', 'salesman', 'non-dealer', 'broker']
-ShCatListDic['stakeholder'] = ['stakeholder', 'partner', 'investor', 'shareholder', 'stockholder', 'creditor',
-                               'funder', 'roundtable']
-ShCatListDic['environment'] = ['environment', 'environ', 'surrounding', 'climate',
-                               'development', 'ecology', 'districts']
-ShCatListDic['regulator'] = ['regulator', 'agency', 'watchdog', 'legislator']
-ShCatListDic['competitor'] = ['competitor', 'competition', 'rival', 'challenger', 'contender', 'adversary']
-# End copied section
+# See if log file exist. If it does, load its cotent into a list. If not, create a new empty one.
+log_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Logs/sh_log1.txt'
+if os.path.exists(log_file): # Log file exists
+    fl = open(log_file, 'r', encoding = 'latin1')
+    done_files_list = fl.readlines()
+    for i in done_files_list:
+        dfl.append(i.strip('\n'))
+    print (dfl)
+    if 'IBM-CL1-FY2018.txt' in dfl:
+        print ('IBM-CL1-FY2018.txt in dfl')
+else: # No log file...make a new one.
+    fl = open(log_file, 'w')
+    fl.write('Files Complete\n')
+    fl.close()
 
-
-# The letters to be searched
+# Build list of letters to be searched
 BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Letters/09-CL-txt/'
-SampleLettersList = ['XEL-CL1-FY2007.txt', 'MRK-CL1-FY2008.txt', 'CSCO-CL1-FY2008.txt', 'ABC-CL2-FY2006.txt', 'CVS-CL1-FY2006.txt',
-                     'BEN-CL1-FY2013.txt', 'SWK-CL1-FY2012.txt', 'NUE-CL1-FY2014.txt', 'ETFC-CL1-FY2011.txt', 'DIS-CL1-FY2012.txt',
-                     'HAL-CL1-FY2017.txt', 'COST-CL1-FY2019.txt', 'D-CL1-FY2019.txt', 'COST-CL1-FY2016.txt', 'EQR-CL1-FY2016.txt']
-# Each row will be letter, sentence id, total letter sentence count, base stakeholder, stakeholder term, and sentence text.
 LettersList = []
 fnl = os.listdir(BaseLetterDir)
 for fn in fnl:
     if fn.lower().endswith('txt'):
         LettersList.append(fn)
 
-
+# Check for outfile. Build header if it does not exist.
 OutList = [['Letter_File_Name', 'Sentence_Token_Count', 'Sent_ID','Total_Letter_Sentences', 'Specific_Term', 'Stakeholder_Group', 'Sentence_Text']]
+out_list = []
+out_header = ['Letter_File_Name', 'Sentence_Token_Count', 'Sent_ID','Total_Letter_Sentences', 'Specific_Term', 'Stakeholder_Group', 'Sentence_Text']
+if not os.path.exists(out_file):
+    fo = open(out_file, "w")
+    fo_csv = csv.writer(fo)
+    fo_csv.writerow(out_header)
+    fo.close()
 
-# Load Letters into strings
 import stanza
 stanza.download('en')
 nlp = stanza.Pipeline('en')
@@ -95,43 +91,54 @@ nlp = stanza.Pipeline('en')
 # Load up Stanza and turn documents into sentences.
 j = 0
 for ltr in LettersList:
-    j = j + 1
-    full_infile_path = BaseLetterDir + ltr
+    if ltr in dfl:
+        print (ltr, "in", dfl)
+    else:
+        print (ltr, "not in", dfl)
+        dfl.append(ltr)
+        j = j + 1
+        full_infile_path = BaseLetterDir + ltr
 
-    inputfile = open(full_infile_path, mode='r', encoding='utf-8', errors='ignore')
-    text1 = inputfile.read()
-#    print (text1)
-    print(j, '--------------------', ltr, '-----------------------') # Moving this forward to improve de-bug. Likely just puking on gibberish characters.
-    doc = nlp(text1)
-#    print('--------------------', ltr, '-----------------------')
-    for i, sent in enumerate(doc.sentences):
-#        print (ltr, i, len(sent.tokens), sent.text)
-        for sh in ShCatList:
-            for w in ShCatBaseListDic[sh]:
-                if w in (sent.text).lower() and len (sent.words) > 9 :
-                    # These lines catch the cases where the plural and singular terms end differently.
-                    # I should really re-write the whole section to move to detecting lemmas.
-                    # More processor-intensive, but more reliable.
-                    # That said, I can capture these with nothing in the lists in the next file and not write them.
-                    if w == 'communities':
-                        w_prime = 'community'
-                    elif w == 'cities':
-                        w_prime = 'city'
-                    elif w == 'agencies':
-                        w_prime = 'agency'
-                    else:
-                        w_prime = w
-                    print (ltr, ':', len(sent.tokens), ';', i, '/', len(doc.sentences), '.', w_prime, '(', sh, ')', ':', sent.text)
-                    OutList.append([ltr, len(sent.tokens), i, len(doc.sentences), w_prime, sh, sent.text])
+        inputfile = open(full_infile_path, mode='r', encoding='utf-8', errors='ignore')
+        text1 = inputfile.read()
+        print(j, '--------------------', datetime.now(), ltr, '-----------------------') # Moving this forward to improve de-bug. Likely just puking on gibberish characters.
+        doc = nlp(text1)
+        for i, sent in enumerate(doc.sentences):
+            for sh in ShCatList:
+                for w in ShCatBaseListDic[sh]:
+                    if w in (sent.text).lower() and len (sent.words) > 9 :
+                        # These lines catch the cases where the plural and singular terms end differently.
+                        # I should really re-write the whole section to move to detecting lemmas.
+                        # More processor-intensive, but more reliable.
+                        # That said, I can capture these with nothing in the lists in the next file and not write them.
+                        if w == 'communities':
+                            w_prime = 'community'
+                        elif w == 'cities':
+                            w_prime = 'city'
+                        elif w == 'agencies':
+                            w_prime = 'agency'
+                        else:
+                            w_prime = w
+                        print (ltr, ':', len(sent.tokens), ';', i, '/', len(doc.sentences), '.', w_prime, '(', sh, ')', ':', sent.text)
+                        out_list.append([ltr, len(sent.tokens), i, len(doc.sentences), w_prime, sh, sent.text])
+        fo = open(out_file, "a")
+        fo_csv = csv.writer(fo)
+        fo_csv.writerows(out_list)
+        fo.close()
+        out_list = []
+# Append file name to log file
+        fl = open(log_file, 'a')
+        fl.write(ltr)
+        fl.write('\n')
+        fl.close()
 
-print (OutList)
 
 # Write OutList to a file
-OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
-import csv
-with open(OutFile, "w") as f:
-    wr = csv.writer(f)
-    wr.writerows(OutList)
+#OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
+#import csv
+#with open(OutFile, "w") as f:
+#    wr = csv.writer(f)
+#    wr.writerows(OutList)
 
 
 # This picks up in the M3 - Dissertation project

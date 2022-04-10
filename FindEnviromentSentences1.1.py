@@ -7,7 +7,7 @@ import os
 import csv
 
 # The letters to be searched
-BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1/Letters/09-CL-txt/'
+BaseLetterDir = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Letters/09-CL-txt/'
 LettersList = []
 OutList = [['LetterFileName', 'Ticker', 'Fiscal_Year', 'Specific_Term', 'Stakeholder_Group']] # Salutation
 fnl = os.listdir(BaseLetterDir)
@@ -17,13 +17,15 @@ for fn in fnl:
     if fn.lower().endswith('txt'):
         LettersList.append(fn)
         ffn = BaseLetterDir + fn
-        f = open(ffn, "r")
+        f = open(ffn, "r", encoding='latin-1')
         data = f.read()
+#        data = data_temp.encode("ascii", "ignore")
         words = data.split()
         print (words)
         for i in range(0,len(words)):
             if ("environment" in words[i].lower() or "climate" in words[i].lower() or "sustainab" in words[i].lower()) \
-                    and not ("econom" in words[i-1].lower() or "economic" in words[i-2].lower() or "economic" in words[i-3].lower())\
+                    and not ("econom" in words[i-1].lower() or "economic" in words[i-2].lower() or "economic" in words[i-3].lower()) \
+                    and not ("financ" in words[i - 1].lower() or "interest" in words[i - 2].lower() or "business" in words[i - 3].lower()) \
                     and not ("politic" in words[i-1].lower() or "politic" in words[i-2].lower() or "politic" in words[i-3].lower()):
                 print(fn, fn.split('-')[0], fn.split('-')[2][2:6], words[i], 'Environment')
                 if i > 5:
