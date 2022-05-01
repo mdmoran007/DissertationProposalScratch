@@ -20,8 +20,8 @@ import os
 import csv
 from datetime import datetime
 
-OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
-out_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v1.csv'
+OutFile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v2.csv'
+out_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Out/sh1-v2.csv'
 
 #ShCatList = ['employee', 'investor', 'customer', 'supplier', 'society', 'community', 'dealer',
 #             'stakeholder', 'environment', 'regulator', 'competitor']
@@ -39,20 +39,20 @@ for key in ShCatList:
 print (MaskDic)
 
 ShCatBaseListDic = {}  # Holds just the base ones I identified
-ShCatBaseListDic['employee'] = ['employee', 'workforce']
-ShCatBaseListDic['investor'] = ['investor', 'shareholder', 'stockholder']
-ShCatBaseListDic['customer'] = ['customer', 'client']
-ShCatBaseListDic['supplier'] = ['supplier', 'supply base']
-ShCatBaseListDic['community'] = ['community', 'city', 'communities', 'cities']
+ShCatBaseListDic['employee'] = ['employee', 'workforce', 'work force', 'personnel', 'our people', 'associate', 'worker']
+ShCatBaseListDic['investor'] = ['investor', 'shareholder', 'stockholder', 'financier', 'bondholder', 'lender' ]
+ShCatBaseListDic['customer'] = ['customer', 'client', 'clientele', 'consumer', 'buyer']
+ShCatBaseListDic['supplier'] = ['supplier', 'supply base', 'business partner']
+ShCatBaseListDic['community'] = ['community', 'city', 'communities', 'cities', 'town', 'society', 'societies']
 #ShCatBaseListDic['society'] = ['society']
 #ShCatBaseListDic['dealer'] = ['dealer', 'distributor', 'wholesaler', 'retailer', 'channel']
-ShCatBaseListDic['stakeholder'] = ['stakeholder', 'partner']
+ShCatBaseListDic['stakeholder'] = ['stakeholder']
 #ShCatBaseListDic['environment'] = ['environment', 'climate']
 #ShCatBaseListDic['regulator'] = ['regulator', 'agency', 'agencies']
 #ShCatBaseListDic['competitor'] = ['competitor', 'competition']
 
 # See if log file exist. If it does, load its cotent into a list. If not, create a new empty one.
-log_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Logs/sh_log1.txt'
+log_file = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper1.1/Logs/sh_log2.txt'
 if os.path.exists(log_file): # Log file exists
     fl = open(log_file, 'r', encoding = 'latin1')
     done_files_list = fl.readlines()
@@ -115,6 +115,8 @@ for ltr in LettersList:
                             w_prime = 'community'
                         elif w == 'cities':
                             w_prime = 'city'
+                        elif w == 'societies':
+                            w_prime = 'society'
                         elif w == 'agencies':
                             w_prime = 'agency'
                         else:

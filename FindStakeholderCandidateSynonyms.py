@@ -13,8 +13,7 @@
 import pickle #So I don't have to keep running this...
 
 # Master List of words that need synonyms
-StakeholderList = ['employee', 'investor', 'customer', 'supplier', 'society', 'community',
-                   'dealer', 'stakeholder', 'environment', 'regulator', 'competitor']
+StakeholderList = ['employee', 'investor', 'customer', 'supplier', 'community', 'stakeholder', 'environment']
 wv_SourceList = ['wv_googlenews', 'wv_fasttext', 'wv_glove', 'wv_conceptnet']
 other_SourceList = ['mark', 'nltk_wordnet']
 SourceList = other_SourceList + wv_SourceList
@@ -63,7 +62,6 @@ for sh in StakeholderList:
 print(SynDic)
 print (' *** Completing GoogleNews via Gensim ***')
 
-
 print (' *** Beginning Glove via Gensim ***')
 wv_glove = api.load('glove-wiki-gigaword-300')
 for sh in StakeholderList:
@@ -101,22 +99,19 @@ print (' *** Completing FastText via Gensim ***')
 print (SynDic)
 
 print (' *** Beginning Mark via Mark ***')
-SynDic['employee']['mark'] = [('workforce', 0), ('our people', 0)]
-SynDic['investor']['mark'] = [('shareholder', 0), ('stockholder', 0)]
-SynDic['customer']['mark'] = [('client', 0)]
-SynDic['supplier']['mark'] = [('supply chain', 0)]
-SynDic['community']['mark'] = [('city', 0)]
-SynDic['dealer']['mark'] = [('distribution channel', 0), ('distributor', 0), ('wholesaler',0)]
-SynDic['stakeholder']['mark'] = [('partner', 0)]
-SynDic['regulator']['mark'] = []
-SynDic['competitor']['mark'] = [('competition', 0)]
+SynDic['employee']['mark'] = [('employee', 0), ('workforce', 0), ('our people', 0), ('personnel', 0), ('associate', 0), ('worker', 0), ('co-worker', 0)]
+SynDic['investor']['mark'] = [('investor', 0), ('shareholder', 0), ('stockholder', 0), ('financier', 0), ('lender', 0),('bondholder', 0)]
+SynDic['customer']['mark'] = [('customer', 0), ('client', 0), ('consumer', 0), ('clientele', 0), ('buyer', 0)]
+SynDic['supplier']['mark'] = [('supplier', 0), ('supply chain', 0), ('supply base', 0), ('business partner', 0)]
+SynDic['community']['mark'] = [('community', 0), ('city', 0), ('town', 0), ('society', 0)]
+SynDic['stakeholder']['mark'] = [('stakeholder', 0)]
 print (' *** Completing Mark via Mark ***')
 
 print (' *** Review Data Structure by Stakeholder')
 for sh in StakeholderList:
     print (SynDic[sh])
 
-f = '/Users/moranmarkd/Downloads/SynDic-v2.pkl'
+f = '/Users/moranmarkd/Downloads/SynDic-v3.pkl'
 outfile = open (f,'wb')
 pickle.dump (SynDic, outfile)
 outfile.close()
