@@ -33,6 +33,7 @@ for fn in fnl:
                     and not ("invest" in words[i - 1].lower() or "invest" in words[i - 2].lower() or "invest" in words[i - 3].lower()) \
                     and not ("legal" in words[i - 1].lower() or "legal" in words[i - 2].lower() or "legal" in words[i - 3].lower()) \
                     and not ("interest" in words[i - 1].lower() or "interest" in words[i - 2].lower() or "interest" in words[i - 3].lower()) \
+                    and not ("work" in words[i - 1].lower() or "work" in words[i - 2].lower() or "work" in words[i - 3].lower()) \
                     and not ("politic" in words[i-1].lower() or "politic" in words[i-2].lower() or "politic" in words[i-3].lower()):
                 print(fn, fn.split('-')[0], fn.split('-')[2][2:6], words[i], 'Environment')
                 if i > 5:

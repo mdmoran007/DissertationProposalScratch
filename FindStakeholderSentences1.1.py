@@ -16,6 +16,13 @@
 # Copied from cfg.py until I get that working
 # Classes of stakeholders currently evaluated
 # ---------------------------------------------------------------------------------------------------
+# May 2022
+# Expanding this based on what I have learned. Major goals:
+#   - Integrate environment stakeholder group into same file.
+#   - Add logic (from environment) to look for preceding words that change meaning
+#   - Add logic to process two-word phrases
+#   - Improve overall flow and logic to increase ease of future extensibility.
+
 import os
 import csv
 from datetime import datetime
