@@ -12,15 +12,25 @@
 
 # Load libraries -------------------------------------------------------------------------------------------------------
 import os
+import csv
 import pandas as pd
 
 # Set variables --------------------------------------------------------------------------------------------------------
-execucomp_infile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper2/TestData/ExecucompTest6.csv'
+execucomp_infile =  '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper2/TestData/ExecucompTest6.csv'
 execucomp_outfile = '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/Paper2/TestData/ExecucompOut1.csv'
+corpdata_infile =   '/Users/moranmarkd/OneDrive/Academics/Illinois/Dissertation/MasterData/MasterTickerData.csv'
+#      Columns: Ticker, CompanyName, GVKey, GICS, FYEndOffset, Founded
+#      FYEndOffSet is a count of months.
+
+TickerList = ['DE', 'CAT', 'PCAR', 'CMI', 'ADM', 'GE'] # This is the six that I've got.
 
 # Load Csv into Pandas DataFrame
 execucomp_df = pd.read_csv(execucomp_infile)
 print(execucomp_df)
+
+# Load Basic Company Data into DataFrame
+corpdata_df = pd.read_csv(corpdata_infile)
+print(corpdata_df)
 
 # Rename Columns
 execucomp_df.rename(columns = {'EXEC_FULLNAME':'CeoFullName',
@@ -80,3 +90,10 @@ execucomp_df['YearsAsCeo'] = execucomp_df['FiscYear'].astype('int') - execucomp_
 print(execucomp_df)
 execucomp_df.to_csv(execucomp_outfile)
 
+for tick in TickerList:
+#    print(corpdata_df.query('Ticker=='DE'')['FYEndOffset'])
+    foo = corpdata_df.loc[corpdata_df['Ticker'] == tick, 'FYEndOffset']
+    print (foo, type(foo), len(foo))
+    print (foo)
+
+#    df2 = df.loc[df['Fee'] == 30000, 'Courses']
